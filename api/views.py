@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login
 
 
 class LoginView(APIView):
+
     def post(self, request):
         response = {}
         response['status'] = 500
@@ -50,6 +51,7 @@ LoginView = LoginView.as_view()
 
 
 class RegisterView(APIView):
+
     def post(self, request):
         response = {}
         response['status'] = 500

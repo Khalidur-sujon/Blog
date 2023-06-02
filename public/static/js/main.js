@@ -1,6 +1,6 @@
 function login() {
-	var username = document.getElementById("loginUsername");
-	var password = document.getElementById("loginPassword");
+	var username = document.getElementById("loginUsername").value;
+	var password = document.getElementById("loginPassword").value;
 	var csrf = document.getElementById("csrf").value;
 
 	if (username == "" && password == "") {
@@ -8,7 +8,7 @@ function login() {
 	}
 
 	var data = {
-		usename: username,
+		username: username,
 		password: password,
 	};
 
@@ -22,6 +22,10 @@ function login() {
 	})
 		.then((result) => result.json())
 		.then((response) => {
-			console.log(response);
+			if (response.status == 200) {
+				window.location.href = "/";
+			} else {
+				alert(response.message);
+			}
 		});
 }
