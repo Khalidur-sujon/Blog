@@ -38,7 +38,7 @@ def add_blog(request):
     try:
         if request.method == 'POST':
             form = BlogForm(request.POST)
-            image = request.FILES.get('image')
+            image = request.FILES.get('image', '')
             title = request.POST.get('title')
             user = request.user
 
@@ -47,11 +47,42 @@ def add_blog(request):
 
             BlogModel.objects.create(
                 title=title, content=content, image=image, user=user)
-            form.save()
+
             return redirect('/add-blog/')
     except Exception as e:
         print(e)
     return render(request, 'home/add_blog.html', context)
+
+
+def blog_update(request, slug):
+    context = {}
+
+    try:
+        blog_post = BlogModel.objects.get(slug=slug)
+
+        if blog_post.user != request.user:
+            return redirect('/')
+
+        initial_dict = {
+            'content': blog_post.content, 'image': blog_post.image}
+        form = BlogForm(initial=initial_dict)
+
+        if request.method == 'POST':
+            form = BlogForm(request.POST)
+
+            if form.is_valid():
+                blog_post.title = request.POST.get('title')
+                blog_post.content = form.cleaned_data['content']
+                blog_post.image = request.FILES.get('image')
+                blog_post.save()
+
+        context['blog_post'] = blog_post
+        context['form'] = form
+
+    except Exception as e:
+        print(e)
+
+    return render(request, 'home/blog_update.html', context)
 
 
 def delete_blog(request, id):
