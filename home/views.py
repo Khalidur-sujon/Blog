@@ -4,11 +4,33 @@ from .models import BlogModel
 
 
 def home(request):
-    return render(request, 'home/home.html')
+    context = {'blogs': BlogModel.objects.all()}
+    return render(request, 'home/home.html', context)
 
 
 def login_view(request):
     return render(request, 'home/login.html')
+
+
+def blog_detail(request, slug):
+    context = {}
+    try:
+        blog_obj = BlogModel.objects.filter(slug=slug).first()
+        context['blog_obj'] = blog_obj
+    except Exception as e:
+        print(e)
+
+    return render(request, 'home/blog_detail.html', context)
+
+
+def see_blog(request):
+    context = {}
+    try:
+        blog_objs = BlogModel.objects.filter(user=request.user).all()
+        context['blog_objs'] = blog_objs
+    except Exception as e:
+        print(e)
+    return render(request, 'home/see_blog.html', context)
 
 
 def add_blog(request):
@@ -16,20 +38,31 @@ def add_blog(request):
     try:
         if request.method == 'POST':
             form = BlogForm(request.POST)
-            image = request.FILES('image')
+            image = request.FILES.get('image')
             title = request.POST.get('title')
             user = request.user
 
-            if form.is_valid:
+            if form.is_valid():
                 content = form.cleaned_data['content']
 
-            blog_obj = BlogModel.objects.create(
+            BlogModel.objects.create(
                 title=title, content=content, image=image, user=user)
-            blog_obj.save()
-            redirect('/add-blog/')
+            form.save()
+            return redirect('/add-blog/')
     except Exception as e:
         print(e)
     return render(request, 'home/add_blog.html', context)
+
+
+def delete_blog(request, id):
+    try:
+        blog_obj = BlogModel.objects.get(id=id)
+        if blog_obj.user == request.user:
+            blog_obj.delete()
+
+    except Exception as e:
+        print(e)
+    return redirect('/see-blog/')
 
 
 def register_view(request):
