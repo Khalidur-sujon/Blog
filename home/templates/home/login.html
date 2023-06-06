@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <!-- Submit-->
-                    <button class="btn btn-lg btn-block btn-primary" onclick="login()">Sign in</button>
+                    <button class="btn btn-lg btn-block btn-primary" onclick="login_api()">Sign in</button>
 
                     <p class="text-center"><small class="text-muted text-center">Don't have an account yet? <a
                                 href="{% url 'register_view' %}">Sign Up </a></small></p>
@@ -50,5 +50,40 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    function login_api() {
+        var username = document.getElementById("loginUsername").value;
+        var password = document.getElementById("loginPassword").value;
+        var csrf = document.getElementById("csrf").value;
+
+        if (username == "" && password == "") {
+            alert("You must enter both");
+        }
+
+        var data = {
+            username: username,
+            password: password,
+        };
+
+        fetch("/api/login/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrf,
+            },
+            body: JSON.stringify(data),
+        })
+            .then((result) => result.json())
+            .then((response) => {
+                if (response.status == 200) {
+                    window.location.href = "/";
+                } else {
+                    alert(response.message);
+                }
+            });
+    }
+
+</script>
 
 {% endblock %}
