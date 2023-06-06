@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 
+from home.models import Profile
+
 
 class LoginView(APIView):
 
@@ -29,6 +31,10 @@ class LoginView(APIView):
             if check_user is None:
                 response['message'] = 'invalid username'
                 raise Exception('invalid username')
+
+            if not Profile.objects.filter(user=check_user).first().is_verified:
+                response['message'] = 'your profile is not verified'
+                raise Exception('profile not verified')
 
             user_obj = authenticate(username=data.get(
                 'username'), password=data.get('password'))
@@ -59,7 +65,6 @@ class RegisterView(APIView):
 
         try:
             data = request.data
-
             if data.get('username') is None:
                 response['message'] = 'key username not found'
                 raise Exception('key username not found')
@@ -75,11 +80,13 @@ class RegisterView(APIView):
                 response['message'] = 'username already exists'
                 raise Exception('username already exists')
 
-            user_obj = User.objects.create(username=data.get('username'))
+            user_obj = User.objects.create(email=data.get(
+                'username'), username=data.get('username'))
             user_obj.set_password(data.get('password'))
             user_obj.save()
+
             response['status'] = 200
-            response['message'] = 'user created'
+            response['message'] = 'An email has been sent to your account.'
 
         except Exception as e:
             print(e)
