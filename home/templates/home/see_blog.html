@@ -1,6 +1,4 @@
-{% extends 'home/base.html' %}
-
-{% block content %}
+{% extends 'home/base.html' %} {% block content %}
 
 <section class="mt-5 pt-5">
     <div class="container">
@@ -16,18 +14,17 @@
             <tbody>
                 {% for blog in blog_objs %}
                 <tr>
-                    <th scope='row'>{{ forloop.counter }}</th>
+                    <th scope="row">{{ forloop.counter }}</th>
                     <td>{{ blog.title }}</td>
                     <td>{{ blog.created_at }}</td>
                     <td>
-                        <a href="{% url 'blog_update' slug=blog.slug %}" class="btn btn-success">Update</a>
+                        <a href="{% url 'blog_update' slug=blog.slug %}" class="btn btn-success mb-2">Update</a>
                         <a href="{% url 'delete_blog' blog.id %}" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-
     </div>
 </section>
 

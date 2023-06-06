@@ -1,43 +1,77 @@
-{% extends "home/base.html" %}
-
-{% block content %}
+{% extends "home/base.html" %} {% block content %}
 
 <div class="container-fluid px-3">
     <div class="row min-vh-100">
         <div class="col-md-8 col-lg-6 col-xl-5 d-flex align-items-center">
             <div class="w-100 py-5 px-md-5 px-xl-6 position-relative">
-
                 <div class="form-validate">
                     <div class="form-group">
-                        <label class="form-label" for="loginUsername"> Email Address</label>
+                        <label class="form-label" for="loginUsername">
+                            Email Address</label>
                         <input class="form-control" name="loginUsername" id="loginUsername" type="email"
                             placeholder="name@address.com" autocomplete="off" required
-                            data-msg="Please enter your email">
+                            data-msg="Please enter your email" />
                     </div>
                     <div class="form-group mb-4">
                         <div class="row">
                             <div class="col">
-                                <label class="form-label" for="loginPassword"> Password</label>
+                                <label class="form-label" for="loginPassword">
+                                    Password</label>
                             </div>
                         </div>
                         <input class="form-control" name="loginPassword" id="loginPassword" placeholder="Password"
-                            type="password" required data-msg="Please enter your password">
+                            type="password" required data-msg="Please enter your password" />
                     </div>
 
                     <!-- Submit-->
-                    <button class="btn btn-lg btn-block btn-primary" onclick="register()">Sign in</button>
-
+                    <button class="btn btn-lg btn-block btn-primary" onclick="register_api()">
+                        Sign Up
+                    </button>
                 </div>
-
             </div>
         </div>
         <div class="col-md-4 col-lg-6 col-xl-7 d-none d-md-block">
             <!-- Image-->
-            <div class="bg-cover h-100 mr-n3"
-                style="background-image: url(https://images.pexels.com/photos/1995730/pexels-photo-1995730.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);">
-            </div>
+            <div class="bg-cover h-100 mr-n3" style="
+					background-image: url(https://images.pexels.com/photos/1995730/pexels-photo-1995730.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+				"></div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    function register_api() {
+        console.log("register api called");
+        var username = document.getElementById("loginUsername").value;
+        var password = document.getElementById("loginPassword").value;
+        var csrf = document.getElementById("csrf").value;
+
+        if (username == "" && password == "") {
+            alert("You must enter both");
+        }
+
+        var data = {
+            username: username,
+            password: password,
+        };
+
+        fetch("/api/register/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrf,
+            },
+            body: JSON.stringify(data),
+        })
+            .then((result) => result.json())
+            .then((response) => {
+                if (response.status == 200) {
+                    window.location.href = "/";
+                } else {
+                    alert(response.message);
+                }
+            });
+    }
+</script>
 
 {% endblock %}
