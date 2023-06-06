@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import logout
+from django.contrib import messages
 from .form import BlogForm
-from .models import BlogModel
+from .models import BlogModel, Profile
 
 
 def home(request):
@@ -104,3 +105,16 @@ def delete_blog(request, id):
 
 def register_view(request):
     return render(request, 'home/register.html')
+
+
+def activate_email(request, token):
+    try:
+        user = Profile.objects.filter(token=token).first()
+        if user:
+            user.is_verified = True
+            user.save()
+            messages.success('Your account have been activated.')
+        return redirect('/login/')
+
+    except Exception as e:
+        return redirect('/')
