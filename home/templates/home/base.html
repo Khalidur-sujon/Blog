@@ -9,6 +9,10 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!-- Price Slider Stylesheets -->
     <link rel="stylesheet" href="/media/css/nouislider.css">
     <!-- Google fonts - Playfair Display-->
@@ -23,7 +27,7 @@
     <link rel="stylesheet" href="/media/css/default.css" id="theme-stylesheet">
     <!-- Custom stylesheet - for your changes-->
     <!-- <link rel="stylesheet" href="/media/css/custom.css"> -->
-    <script src="/media/js/main.js"></script>
+    <link rel="stylesheet" type="text/css" href="/media/css/main.css">
 
 </head>
 <body style="padding-top: 72px;">
@@ -49,6 +53,9 @@
                         </li>
                         <li class="nav-item mt-3 mt-lg-0 ml-lg-3 d-lg-none d-xl-inline-block">
                             <a class="btn btn-danger" href="{% url 'logout_view' %}">Logout</a>
+                        </li>
+                        <li class="nav-item mt-3 mt-lg-0 ml-lg-3 d-lg-none d-xl-inline-block">
+                            <a class="btn btn-info" href="{% url 'profile_view' %}">Profile</a>
                         </li>
                         {% else %}
                         <li class="nav-item mt-3 mt-lg-0 ml-lg-3 d-lg-none d-xl-inline-block">
