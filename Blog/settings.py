@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'home',
     'rest_framework',
     'froala_editor',
+    "crispy_forms",
+    "crispy_bootstrap5",
 ]
 
 MIDDLEWARE = [
@@ -126,7 +128,7 @@ STATICFILES_DIR = {
     os.path.join(BASE_DIR, "public/static")
 }
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'public/static')
+MEDIA_ROOT = os.path.join(BASE_DIR, "public/static")
 MEDIA_URL = '/media/'
 
 
@@ -144,3 +146,7 @@ EMAIL_HOST_USER = 'tes000ing@gmail.com'
 EMAIL_HOST_PASSWORD = 'testing321'
 # DEFAULT_FROM_EMAIL = 'tes000ing@gmail.com'
 # SERVER_EMAIL = 'tes000ing@gmail.com'
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
